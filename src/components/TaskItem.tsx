@@ -2,28 +2,29 @@ import { useState } from "react";
 import styled from "styled-components"
 import { Palheta } from "../utils/Cores/palheta";
 
-const Item = styled.div`
-    border-radius: 3px;
+const Container = styled.div`
+    border-radius: 0.5rem;
     border: 1px solid ${Palheta.azulClaro};
-    color: ${Palheta.branco};
-    cursor: pointer;
+    background-color: ${Palheta.branco};
+    color: ${Palheta.preto};
     margin-bottom: 0.5rem;
     width: 100%;
     padding: 0.5rem 0.25rem;
     font-size: 14px;
     transition: all 500ms ease-in-out;
+`;
 
-    &.task-item-pendente {
-        background-color: ${Palheta.vermelho};
-    }
-    &.task-item-fazendo {
-        background-color: ${Palheta.laranja};
-    }
-    &.task-item-completo {
-        background-color: ${Palheta.verde};
-    }
-
+const Item = styled.div`
+    border-radius: 0.25rem;
+    border: 1px solid ${Palheta.azulClaro};
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.25rem;
+    transition: all 500ms ease-in-out;
+    
     &:hover {
+        color: ${Palheta.branco};
         border: 1px solid transparent;
         background-color: ${Palheta.roxo};
         font-weight: bolder;
@@ -45,8 +46,22 @@ const Select = styled.select`
     width: 100%;
     border-radius: 3px;
     padding: 0.15rem 0.25rem;
-    margin-top: -0.25rem;
-    margin-bottom: 0.5rem;
+    color: ${Palheta.branco};
+
+    &.task-item-pendente {
+        background-color: ${Palheta.vermelho};
+    }
+    &.task-item-fazendo {
+        background-color: ${Palheta.laranja};
+    }
+    &.task-item-completo {
+        background-color: ${Palheta.verde};
+    }
+
+    option {
+        height: 48px;
+        color: ${Palheta.preto};
+    }
 `;
 
 type Props = {
@@ -90,16 +105,14 @@ export default function TaskItem({id, title, taskState, onTaskUpdate}: Props) {
         <>
             { editavel
                 ? <Input type="text" value={tituloEditavel} onChange={onTitleChange} onKeyDown={onKeyPress}/>
-                : <>
-                    <Item className={setaClasse()} onClick={(e) => setEditavel(true)}>
-                            {tituloEditavel}
-                        </Item>
-                    <Select onChange={onTapStateChange} value={taskState}>
-                        <option value="Pendente">Pendente</option>
-                        <option value="Fazendo">Fazendo</option>
-                        <option value="Completo">Completo</option>
+                : <Container>
+                    <Item onClick={(e) => setEditavel(true)}>{tituloEditavel}</Item>
+                    <Select className={setaClasse()} onChange={onTapStateChange} value={taskState}>
+                        <option style={{background: `${Palheta.branco}`}} value="Pendente">Pendente</option>
+                        <option style={{background: `${Palheta.branco}`}} value="Fazendo">Fazendo</option>
+                        <option style={{background: `${Palheta.branco}`}} value="Completo">Completo</option>
                     </Select>
-                </>
+                </Container>
             }
         </>
     )
