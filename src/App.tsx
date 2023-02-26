@@ -21,13 +21,15 @@ const TaskContainer = styled.div`
     padding: 0.5rem;
 `;
 
+let idAccumulado: number = 0;
+
 function App() {
   const [lisTasks, setListTasks] = useState(modelTask);
-  let idAccumulado: number = 0;
-
+  
   //função para gerar novo id
   const generateId = () : number => {
-    idAccumulado =+ 1;
+    idAccumulado += 1;
+    console.log(idAccumulado);
     return idAccumulado;
   }
 

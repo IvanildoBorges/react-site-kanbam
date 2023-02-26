@@ -3,23 +3,29 @@ import styled from "styled-components"
 import { Palheta } from "../utils/Cores/palheta";
 
 const Item = styled.div`
-    &.task-item {
-        background-color: ${Palheta.azul};
-        color: ${Palheta.branco};
-        border-radius: 3px;
-        border: 1px solid ${Palheta.azulClaro};
-        cursor: pointer;
-        margin-bottom: 0.5rem;
-        width: 100%;
-        padding: 0.5rem 0.25rem;
-        font-size: 14px;
-        transition: all 500ms ease-in-out;
+    border-radius: 3px;
+    border: 1px solid ${Palheta.azulClaro};
+    color: ${Palheta.branco};
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.25rem;
+    font-size: 14px;
+    transition: all 500ms ease-in-out;
+
+    &.task-item-pendente {
+        background-color: ${Palheta.vermelho};
+    }
+    &.task-item-fazendo {
+        background-color: ${Palheta.laranja};
+    }
+    &.task-item-completo {
+        background-color: ${Palheta.verde};
     }
 
-    &.task-item:hover {
+    &:hover {
         border: 1px solid transparent;
-        background-color: ${Palheta.secundaria};
-        color: ${Palheta.branco};
+        background-color: ${Palheta.roxo};
         font-weight: bolder;
     }
 `;
@@ -54,6 +60,16 @@ export default function TaskItem({id, title, taskState, onTaskUpdate}: Props) {
     const [editavel, setEditavel] = useState(false);
     const [tituloEditavel, setTituloEditavel] = useState(title);
 
+    const setaClasse = () : string => {
+        if (taskState === "Fazendo") {
+            return "task-item-fazendo";
+        } else if (taskState === "Completo") {
+            return "task-item-completo";
+        } else {
+            return "task-item-pendente";
+        }
+    }
+
     const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newTitle = event.target.value;
         setTituloEditavel(newTitle);
@@ -75,7 +91,9 @@ export default function TaskItem({id, title, taskState, onTaskUpdate}: Props) {
             { editavel
                 ? <Input type="text" value={tituloEditavel} onChange={onTitleChange} onKeyDown={onKeyPress}/>
                 : <>
-                    <Item className="task-item" onClick={(e) => setEditavel(true)}>{tituloEditavel}</Item>
+                    <Item className={setaClasse()} onClick={(e) => setEditavel(true)}>
+                            {tituloEditavel}
+                        </Item>
                     <Select onChange={onTapStateChange} value={taskState}>
                         <option value="Pendente">Pendente</option>
                         <option value="Fazendo">Fazendo</option>
