@@ -1,14 +1,94 @@
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import NavBar from './components/layout/NavBar';
+import TaskList from './components/TaskList';
+import { modelTask, Task } from './model/Task';
+
+const AppContainer = styled.div`
+  &.App {
+    height: 100%;
+    min-height: 100vh;
+  }
+`;
+
+const TaskContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 0.5rem;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    padding: 0.5rem;
+`;
 
 function App() {
+  const [lisTasks, setListTasks] = useState(modelTask);
+  let idAccumulado: number = 0;
+
+  //função para gerar novo id
+  const generateId = () : number => {
+    idAccumulado =+ 1;
+    return idAccumulado;
+  }
+
+  //função para criar nova task
+  const addTask = (title: string, status: string) => {
+    const newTask: Task = {
+      id: generateId(),
+      title,
+      status
+    }
+
+    //nesse useState estamos usando um callback para ter acesso ao valor anterior da função,
+    // por exemplo, se quiser fazer uma alteração no valor que era anterior ao valor presente
+    // é usado o callback pra isso
+    setListTasks((existingTask) => {
+      //... é operador de desestruturação para arrancar os valores do array recebido por 
+      // paramentro para o novo array
+      return [...existingTask, newTask]
+    });
+  }
+
+  const updateTask = (id: number, title: string, status: string) => {
+    setListTasks((existingTasks) => {
+      return existingTasks.map((task) => {
+        if (task.id === id) {
+          return {...task, title, status}  //sobreescreve os atributos pelos paramentros recebidos, menos o id (porque não foi citado ele nesse desestruturação)
+        } else {
+          return task
+        }
+      })
+    })
+  }
+
+  useEffect(() => {
+    setListTasks([]);
+  }, []);
+
   return (
-    <div className="App">
+    <AppContainer className="App">
       <NavBar />
-      <ul className="lista">
-        <li>Item criado</li>
-        <li>Item criado</li>
-      </ul>
-    </div>
+      <TaskContainer>
+        <TaskList 
+          titulo="Pendente" 
+          lista={lisTasks.filter((tarefaItem) => tarefaItem.status === "Pendente")} 
+          taskState="Pendente"
+          onAddTask={addTask} onTaskUpdate={updateTask} 
+        />
+        <TaskList 
+          titulo="Fazendo" 
+          lista={lisTasks.filter((tarefaItem) => tarefaItem.status === "Fazendo")}
+          taskState="Fazendo"
+          onAddTask={addTask} onTaskUpdate={updateTask} 
+        />
+        <TaskList 
+          titulo="Completo" 
+          lista={lisTasks.filter((tarefaItem) => tarefaItem.status === "Completo")}
+          taskState="Completo"
+          onAddTask={addTask} onTaskUpdate={updateTask} 
+        />
+      </TaskContainer>
+    </AppContainer>
   )
 }
 

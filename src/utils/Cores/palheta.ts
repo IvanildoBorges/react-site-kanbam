@@ -4,7 +4,9 @@ export const Palheta = {
     roxo: "#5503FF",
     rosa: "#AC0AFF",
     azul: "#0079bf",
+    azulClaro: "#5797b9",
     branco: "#fafafa",
+    preto: "#333",
 }
 
 export const lightTheme = {

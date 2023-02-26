@@ -30,11 +30,6 @@ const rootConfig = globalStyle`
         -moz-osx-font-smoothing: grayscale;
         -webkit-text-size-adjust: 100%;
     }
-    
-    .App {
-        height: 100%;
-        min-height: 100vh;
-    }
 `;
 
 export default rootConfig;
