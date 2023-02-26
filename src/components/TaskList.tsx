@@ -21,6 +21,13 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     padding: 1rem 0.25rem;
+
+    .empty-list {
+        text-align: center;
+        border: 2px dashed ${Palheta.branco};
+        border-radius: 0.25rem;
+        padding: 0.25rem;
+    }
 `;
 
 const Botao = styled.button`
@@ -50,9 +57,10 @@ type Props = {
     taskState: string,
     onAddTask: (titulo: string, estado: string) => void,
     onTaskUpdate: (id: number, titulo: string, estado: string) => void,
+    onDeleteTask: (id: number) => void
 }
 
-export default function TaskList({ titulo, lista, taskState, onAddTask, onTaskUpdate }: Props) {
+export default function TaskList({ titulo, lista, taskState, onAddTask, onTaskUpdate, onDeleteTask }: Props) {
     const adicionarTarefa = () => {
         onAddTask("Nova Tarefa", taskState);
     }
@@ -69,9 +77,13 @@ export default function TaskList({ titulo, lista, taskState, onAddTask, onTaskUp
                                 title={tarefa.title}
                                 taskState={tarefa.status}
                                 onTaskUpdate={onTaskUpdate}
+                                onDeleteTask={onDeleteTask}
                             />
                         )
                     })
+                }
+                {lista.length === 0 
+                    && <div className="empty-list">Lista vazia</div>
                 }
             </Content>
             <Botao onClick={adicionarTarefa}>Adicionar Tarefa</Botao>

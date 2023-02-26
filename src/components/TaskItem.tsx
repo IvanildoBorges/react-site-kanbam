@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components"
+import Trash from "../assets/Trash";
 import { Palheta } from "../utils/Cores/palheta";
 
 const Container = styled.div`
@@ -41,12 +42,22 @@ const Input = styled.input`
     margin-bottom: 0.5rem;
 `;
 
+const Row = styled.div`
+    display: flex;
+    gap: 0.5rem;
+
+    .lixeira-icon {
+        cursor: pointer;
+    }
+`;
+
 const Select = styled.select`
     display: block;
     width: 100%;
     border-radius: 3px;
     padding: 0.15rem 0.25rem;
     color: ${Palheta.branco};
+    cursor: pointer;
 
     &.task-item-pendente {
         background-color: ${Palheta.vermelho};
@@ -69,9 +80,10 @@ type Props = {
     title: string,
     taskState: string
     onTaskUpdate: (id: number, titulo: string, estado: string) => void
+    onDeleteTask: (id: number) => void
 }
 
-export default function TaskItem({id, title, taskState, onTaskUpdate}: Props) {
+export default function TaskItem({id, title, taskState, onTaskUpdate, onDeleteTask}: Props) {
     const [editavel, setEditavel] = useState(false);
     const [tituloEditavel, setTituloEditavel] = useState(title);
 
@@ -94,6 +106,9 @@ export default function TaskItem({id, title, taskState, onTaskUpdate}: Props) {
     const onKeyPress = (event: any) => {
         if (event.key === "Enter") {
             setEditavel(false);
+            if (tituloEditavel.length === 0) {
+                onDeleteTask(id)
+            }
         }
     }
 
@@ -107,11 +122,22 @@ export default function TaskItem({id, title, taskState, onTaskUpdate}: Props) {
                 ? <Input type="text" value={tituloEditavel} onChange={onTitleChange} onKeyDown={onKeyPress}/>
                 : <Container>
                     <Item onClick={(e) => setEditavel(true)}>{tituloEditavel}</Item>
-                    <Select className={setaClasse()} onChange={onTapStateChange} value={taskState}>
-                        <option style={{background: `${Palheta.branco}`}} value="Pendente">Pendente</option>
-                        <option style={{background: `${Palheta.branco}`}} value="Fazendo">Fazendo</option>
-                        <option style={{background: `${Palheta.branco}`}} value="Completo">Completo</option>
-                    </Select>
+                    <Row>
+                        <Select className={setaClasse()} onChange={onTapStateChange} value={taskState}>
+                            <option style={{background: `${Palheta.branco}`}} value="Pendente">Pendente</option>
+                            <option style={{background: `${Palheta.branco}`}} value="Fazendo">Fazendo</option>
+                            <option style={{background: `${Palheta.branco}`}} value="Completo">Completo</option>
+                        </Select>
+                        <Trash 
+                            classe="lixeira-icon" 
+                            tamanho={24} 
+                            corDaTampa={`${Palheta.rosa}`} 
+                            corDaLata={`${Palheta.rosa}`}
+                            corDasListras={`${Palheta.branco}`}
+                            onTapTrash={() => onDeleteTask(id)}
+                        />
+                    </Row>
+                    
                 </Container>
             }
         </>

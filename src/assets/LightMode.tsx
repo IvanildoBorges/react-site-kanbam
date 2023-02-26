@@ -1,6 +1,10 @@
-function LightMode({...props}) {
-    const {classe, cor, tamanho} = props;
+type Props = {
+    classe: string,
+    cor: string,
+    tamanho: number
+}
 
+function LightMode({classe, cor, tamanho}: Props) {
     return (
         <svg
         className={classe}

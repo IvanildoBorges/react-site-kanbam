@@ -1,6 +1,10 @@
-export default function DarkMode({...props}) {
-    const {classe, cor, tamanho} = props;
+type Props = {
+    classe: string,
+    cor: string,
+    tamanho: number
+}
 
+export default function DarkMode({classe, cor, tamanho}: Props) {
     return (
         <svg
         className={classe}
