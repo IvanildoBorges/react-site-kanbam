@@ -104,7 +104,7 @@ export default function TaskItem({id, title, taskState, onTaskUpdate, onDeleteTa
     }
 
     const onKeyPress = (event: any) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" || event.keyCode === 13) {
             setEditavel(false);
             if (tituloEditavel.length === 0) {
                 onDeleteTask(id)
@@ -119,7 +119,7 @@ export default function TaskItem({id, title, taskState, onTaskUpdate, onDeleteTa
     return (
         <>
             { editavel
-                ? <Input type="text" value={tituloEditavel} onChange={onTitleChange} onKeyDown={onKeyPress}/>
+                ? <Input className="input" type="text" value={tituloEditavel} onChange={onTitleChange} onKeyDown={onKeyPress}/>
                 : <Container>
                     <Item onClick={(e) => setEditavel(true)}>{tituloEditavel}</Item>
                     <Row>
