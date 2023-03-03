@@ -1,6 +1,6 @@
 # react-site-kanbam
 **Link da aplicação em funcionamento**
-<a href="https://appkanban.netlify.app/" target="_blank">App Kanban</a>
+<a href="https://appkanban.netlify.app/" target="blank">App Kanban</a>
 
 **Resumo**
 Aplicação react com typescript para criação e gerência de tarefas usando metodologia agil kanban
