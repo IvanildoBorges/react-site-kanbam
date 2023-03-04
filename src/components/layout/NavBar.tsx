@@ -4,6 +4,7 @@ import { Palheta } from "../../utils/Cores/palheta";
 
 const Nav = styled.nav`
     display: flex;
+    width: 100%;
     place-items: center;
     justify-content: space-between;
     padding: 0 1.5rem;

@@ -2,9 +2,16 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import NavBar from './components/layout/NavBar';
 import TaskList from './components/TaskList';
+import UserInfo from './components/UserInfo';
 import { modelTask, Task } from './model/Task';
+import { modelUser, User } from './model/User';
+import api from './services/api';
 
 const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   &.App {
     height: 100%;
     min-height: 100vh;
@@ -17,7 +24,6 @@ const TaskContainer = styled.div`
     grid-gap: 0.5rem;
     width: 100%;
     max-width: 800px;
-    margin: auto;
     padding: 0.5rem;
 
     @media screen and (max-width: 768px) {
@@ -29,6 +35,7 @@ let idAccumulado: number = 0;
 
 function App() {
   const [lisTasks, setListTasks] = useState(modelTask);
+  const [listUsers, setListUsers] = useState(modelUser);
   
   //função para gerar novo id
   const generateId = () : number => {
@@ -72,13 +79,23 @@ function App() {
     })
   }
 
+  const pegarUsuarios = async () => {
+    let listaDeUsuarios = await api.getUsers()
+    .then((resposta) => resposta ? resposta.data.users : modelUser)
+    .then((user: User[]) => user);
+
+    setListUsers(listaDeUsuarios);
+  }
+
   useEffect(() => {
+    pegarUsuarios();
     setListTasks([]);
   }, []);
 
   return (
     <AppContainer className="App">
       <NavBar />
+      <UserInfo nome={listUsers[0].name} email={listUsers[0].email} />
       <TaskContainer>
         <TaskList 
           titulo="Pendente" 
