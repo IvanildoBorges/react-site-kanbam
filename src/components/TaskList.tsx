@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { Palheta } from "../utils/Cores/palheta";
-import PropTypes, { InferProps } from 'prop-types';
-import { Task } from "../model/Task";
+import Cores from "../styles/cores/cores";
+import { Task } from "../schemas/task.schema";
 import TaskItem from "./TaskItem";
 
 const BoxTaskList = styled.div`
     padding: 0.5rem;
-    background-color: ${Palheta.azul};
-    border-radius: 2px;
+    background-color: ${Cores.azul};
+    border-radius: 0.25rem;
 `;
 
 const BoxTitulo = styled.div`
@@ -20,21 +19,29 @@ const BoxTitulo = styled.div`
 const Content = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 1rem 0.25rem;
+    margin: 1rem 0;
+    width: 100%;
+    gap: 0.5rem;
 
     .empty-list {
         text-align: center;
-        border: 2px dashed ${Palheta.branco};
+        border: 2px dashed ${Cores.branco};
         border-radius: 0.25rem;
         padding: 0.25rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        & {
+            margin: 0.75rem 0;
+        }
     }
 `;
 
 const Botao = styled.button`
     width: 100%;
     height: 2.2rem;
-    color: ${Palheta.preto};
-    background-color: ${Palheta.branco};
+    color: ${Cores.preto};
+    background-color: ${Cores.branco};
     font-weight: bold;
     border-radius: 0.25rem;
     border: none;
@@ -42,15 +49,11 @@ const Botao = styled.button`
     transition: all 350ms ease-in;
 
     &:hover {
-        color: ${Palheta.branco};
-        background-color: ${Palheta.rosa};
+        color: ${Cores.branco};
+        background-color: ${Cores.rosa};
     }
 `;
 
-//Como verificar e validar tipos de dados recebidos pelo objeto props do componente?
-//Podemos fazer usando a biblioteca PropTypes ou um objeto feito com a palavra reservada type do typescript
-
-//usando type (forma indicada):
 type Props = {
     titulo: string,
     lista: Task[],
@@ -90,22 +93,3 @@ export default function TaskList({ titulo, lista, taskState, onAddTask, onTaskUp
         </BoxTaskList>
     )
 }
-
-//usando PropTypes:
-/*export default function TaskList({ titulo }: Props) {
-    return (
-        <BoxTaskList>
-            <BoxTitulo>{titulo}</BoxTitulo>
-            <Content></Content>
-        </BoxTaskList>
-    )
-}*/
-
-//Proptypes é escopoe, ou seja, usado para modificar o componente e os tipos que ele recebe
-/*TaskList.propTypes = {
-    titulo: PropTypes.string,
-}*/
-
-//No prop-typespacote, todos os adereços são opcionais por padrão. Para tornar um prop 
-//necessário, você terá que usar explicitamente .isRequired
-//ex: FavoriteColor.propTypes = { cor: PropTypes.string.isRequired }

@@ -1,15 +1,46 @@
 import { useState } from "react";
 import styled from "styled-components"
 import Trash from "../assets/Trash";
-import { Palheta } from "../utils/Cores/palheta";
+import Cores from "../styles/cores/cores";
+
+const Input = styled.input`
+    &.input {
+        border: 1px solid ${Cores.azulEscuro};
+        background-color: ${Cores.brancoForte};
+        font-size: 14px;
+        display: block;
+        border-radius: 3px;
+        padding: 0.5rem 0.25rem;
+        margin-bottom: 0.5rem;
+        transition: all 500ms ease-in;
+    }
+    &.input:hover {
+        color: ${Cores.branco};
+        background-color: ${Cores.roxo};
+        border: 1px solid transparent;
+        font-weight: bolder;
+        cursor: pointer;
+    }
+    &.input:focus {
+        outline: none;
+        color: ${Cores.preto};
+        background-color: ${Cores.branco};
+        font-weight: normal;
+        cursor: text;
+    }
+
+    @media screen and (max-width: 768px) {
+        &.input {
+            margin-bottom: 0.5rem;
+        }
+    }
+`;
 
 const Container = styled.div`
     border-radius: 0.5rem;
-    border: 1px solid ${Palheta.azulClaro};
-    background-color: ${Palheta.branco};
-    color: ${Palheta.preto};
-    margin-bottom: 0.5rem;
-    width: 100%;
+    border: 1px solid ${Cores.azul};
+    background-color: ${Cores.branco};
+    color: ${Cores.preto};
     padding: 0.5rem 0.25rem;
     font-size: 14px;
     transition: all 500ms ease-in-out;
@@ -17,29 +48,18 @@ const Container = styled.div`
 
 const Item = styled.div`
     border-radius: 0.25rem;
-    border: 1px solid ${Palheta.azulClaro};
+    border: 1px solid ${Cores.azul};
     cursor: pointer;
     margin-bottom: 0.5rem;
-    width: 100%;
     padding: 0.5rem 0.25rem;
     transition: all 500ms ease-in-out;
     
     &:hover {
-        color: ${Palheta.branco};
+        color: ${Cores.branco};
+        background-color: ${Cores.roxo};
         border: 1px solid transparent;
-        background-color: ${Palheta.roxo};
         font-weight: bolder;
     }
-`;
-
-const Input = styled.input`
-    border: none;
-    font-size: 14px;
-    display: block;
-    width: 100%;
-    border-radius: 3px;
-    padding: 0.5rem 0.25rem;
-    margin-bottom: 0.5rem;
 `;
 
 const Row = styled.div`
@@ -56,22 +76,22 @@ const Select = styled.select`
     width: 100%;
     border-radius: 3px;
     padding: 0.15rem 0.25rem;
-    color: ${Palheta.branco};
+    color: ${Cores.branco};
     cursor: pointer;
 
     &.task-item-pendente {
-        background-color: ${Palheta.vermelho};
+        background-color: ${Cores.vermelho};
     }
     &.task-item-fazendo {
-        background-color: ${Palheta.laranja};
+        background-color: ${Cores.laranja};
     }
     &.task-item-completo {
-        background-color: ${Palheta.verde};
+        background-color: ${Cores.verdeEscuro};
     }
 
     option {
         height: 48px;
-        color: ${Palheta.preto};
+        color: ${Cores.preto};
     }
 `;
 
@@ -119,25 +139,33 @@ export default function TaskItem({id, title, taskState, onTaskUpdate, onDeleteTa
     return (
         <>
             { editavel
-                ? <Input className="input" type="text" value={tituloEditavel} onChange={onTitleChange} onKeyDown={onKeyPress}/>
+                ? <Input 
+                    className="input" 
+                    type="text" 
+                    value={tituloEditavel} 
+                    onChange={onTitleChange} 
+                    onKeyDown={onKeyPress}
+                    autoFocus={true}
+                />
                 : <Container>
                     <Item onClick={(e) => setEditavel(true)}>{tituloEditavel}</Item>
                     <Row>
                         <Select className={setaClasse()} onChange={onTapStateChange} value={taskState}>
-                            <option style={{background: `${Palheta.branco}`}} value="Pendente">Pendente</option>
-                            <option style={{background: `${Palheta.branco}`}} value="Fazendo">Fazendo</option>
-                            <option style={{background: `${Palheta.branco}`}} value="Completo">Completo</option>
+                            <option style={{background: `${Cores.branco}`}} value="Pendente">Pendente
+                            </option>
+                            <option style={{background: `${Cores.branco}`}} value="Fazendo">Fazendo
+                            </option>
+                            <option style={{background: `${Cores.branco}`}} value="Completo">Completo</option>
                         </Select>
                         <Trash 
                             classe="lixeira-icon" 
                             tamanho={24} 
-                            corDaTampa={`${Palheta.rosa}`} 
-                            corDaLata={`${Palheta.rosa}`}
-                            corDasListras={`${Palheta.branco}`}
+                            corDaTampa={`${Cores.rosa}`} 
+                            corDaLata={`${Cores.rosa}`}
+                            corDasListras={`${Cores.branco}`}
                             onTapTrash={() => onDeleteTask(id)}
                         />
                     </Row>
-                    
                 </Container>
             }
         </>
